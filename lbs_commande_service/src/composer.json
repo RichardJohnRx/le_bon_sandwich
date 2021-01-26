@@ -1,0 +1,23 @@
+{
+  "name": "vendor_name/td1",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Richard John Rx",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    "slim/slim": "3.*",
+    "illuminate/database": "8.17.0",
+    "php": ">=7.0",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "lbs\\commande\\": "."
+    }
+  }
+}
