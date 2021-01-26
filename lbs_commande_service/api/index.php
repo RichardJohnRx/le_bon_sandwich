@@ -23,7 +23,7 @@ $app->post('/commandes[/]',
     ->add(new sv(cv::create_validators()));
 
 $app->post('/commandes/{id}/paiement[/]',
-    \lbl\commande\api\controller\CommandeController::class . ':payCommande')
+    \lbs\commande\api\controller\CommandeController::class . ':payCommande')
     ->add(\lbs\commande\api\middlewares\Token::class . ':check')
     ->add(new sv(cv::payment_validators()))
     ->setName('paiement');
