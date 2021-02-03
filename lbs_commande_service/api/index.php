@@ -18,7 +18,7 @@ $app = new \Slim\App($c);
 $app->get('/TD1/commandes/{name}[/]',
  function (Request $req, Response $resp, array $args):Response {
      $controleur = new \lbs\commande\api\controller\CommandeController($this);
-     return $controleur->sayHello($req, $resp, $args);
+     return $controleur->listCommandes($req, $resp, $args);
     }
 ); 
 
