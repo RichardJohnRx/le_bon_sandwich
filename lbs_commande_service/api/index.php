@@ -5,27 +5,25 @@ $api_settings = require_once __DIR__ . '/../src/api/conf/api_settings.php';
 $api_errors = require_once __DIR__ . '/../src/api/conf/api_errors.php';
 $api_depend = require_once __DIR__ . '/../src/api/conf/api_dependencies.php';
 
-$api_container = new \Slim\Container(array_merge($api_settings,$api_errors,$api_depend));
+use \Psr\Http\Message\ServerRequestInterface as Request;
+use \Psr\Http\Message\ResponseInterface as Response;
 
-$app = new \Slim\App($api_container);
+$config = require_once __DIR__ .  '/../src/conf/settings.php';
+$c = new \Slim\Container($config);
 
-\lbs\commande\api\bootstrap\LbsBootstrap::startEloquent($api_container->settings['dbconf']);
+$app = new \Slim\App($c);
 
-$app->get('/TD1/commandes[/]',
-    \lbs\commande\api\controller\CommandeController::class . ':listCommandes');
+//\lbs\commande\api\bootstrap\LbsBootstrap::startEloquent($api_container->settings['dbconf']);
 
-$app->get('/TD1/commandes/{id}[/]',
+$app->get('/TD1/commandes/{name}[/]',
+ function (Request $req, Response $resp, array $args):Response {
+     $controleur = new \lbs\commande\api\controller\CommandeController($this);
+     return $controleur->listCommandes($req, $resp, $args);
+    }
+); 
+
+$app->get('/TD1/commanddes/{id}[/]',
     \lbs\commande\api\controller\CommandeController::class . ':uneCommande')
     ->setName('commande');
 
-$app->post('/commandes[/]',
-    \lbs\commande\api\controller\CommandeController::class . ':createCommande')
-    ->add(new sv(cv::create_validators()));
-
-$app->post('/commandes/{id}/paiement[/]',
-    \lbs\commande\api\controller\CommandeController::class . ':payCommande')
-    ->add(\lbs\commande\api\middlewares\Token::class . ':check')
-    ->add(new sv(cv::payment_validators()))
-    ->setName('paiement');
-
-
+$app->run();
