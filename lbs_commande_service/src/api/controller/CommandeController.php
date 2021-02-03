@@ -18,6 +18,21 @@ class CommandeController{
         ["id" => "01RF56TH","mail_client"=>"d@a.fr","date_commande"=>"1-12-2020","montant"=>30.0]
     ];
 
+    private $c; 
+
+    public function __construct(\Slim\Container $c){
+        $this->c = $c;
+    }
+
+    function sayHello(Request $req, Response $resp, array $args):Response {
+        $p = $req->getQueryParam('p', 0);
+        $name = $args['name'];
+   
+        $dbfile = $this->c->settings['dbfile'];
+        $resp->getBody()->write("<h1>Hello, $name</h1>".$dbfile."p=".$p);
+        return $resp;
+    }
+    
     public function listCommandes(Request $rq, Response $rs, array $args) : Response{
         $data = [
             "type" => "collection",
