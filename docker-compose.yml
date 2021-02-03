@@ -56,8 +56,8 @@ services:
     networks:
       - lbs.net
     links:
-      - mongo.cat:dbcat
-#      - mysql.catalogue:dbcat
+#      - mongo.cat:dbcat
+      - mysql.catalogue:dbcat
 
 
 # Services de gestion des données
@@ -76,7 +76,7 @@ services:
       - MYSQL_PASSWORD=command_lbs
       - MYSQL_DATABASE=command_lbs
     ports:
-      - '3307:3306'
+      - '3317:3306'
     networks:
       - lbs.net
     volumes:
@@ -85,20 +85,20 @@ services:
 #
 # Base de données du catalogue, utilisée par le service catalogue
 #
-#  mysql.catalogue:
-#    image: 'mariadb:latest'
-#    command: '--default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci'
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=catroot
-#      - MYSQL_USER=cat_lbs
-#      - MYSQL_PASSWORD=cat_lbs
-#      - MYSQL_DATABASE=cat_lbs
-#    ports:
-#      - '3309:3306'
-#    networks:
-#      - lbs.net
-#    volumes:
-#      - './lbs_catalogue_service/sql:/var/sql'
+  mysql.catalogue:
+    image: 'mariadb:latest'
+    command: '--default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci'
+    environment:
+      - MYSQL_ROOT_PASSWORD=catroot
+      - MYSQL_USER=cat_lbs
+      - MYSQL_PASSWORD=cat_lbs
+      - MYSQL_DATABASE=cat_lbs
+    ports:
+      - '3319:3306'
+    networks:
+      - lbs.net
+    volumes:
+      - './lbs_catalogue_service/sql:/var/sql'
 
 #
 # adminer, pour la gestion des bases sql
@@ -112,26 +112,26 @@ services:
       - lbs.net
     links:
       - mysql.commande:command
-#      - mysql.catalogue:catalogue
+      - mysql.catalogue:catalogue
 
 #
 # mongo service, pour un catalogue mongo
 #
 
-  mongo.cat:
-    image: 'mongo:latest'
-    volumes:
-      - ./lbs_catalogue_service/data:/var/data
-    working_dir: /var/data
-    networks:
-      - lbs.net
-    ports:
-      - 27018:27017
-  mongo-express:
-    image: mongo-express:latest
-    networks:
-      - lbs.net
-    ports:
-      - 8081:8081
-    links:
-      - mongo.cat:mongo
+#  mongo.cat:
+#    image: 'mongo:latest'
+#    volumes:
+#      - ./lbs_catalogue_service/data:/var/data
+#    working_dir: /var/data
+#    networks:
+#      - lbs.net
+#    ports:
+#      - 27018:27017
+#  mongo-express:
+#    image: mongo-express:latest
+#    networks:
+#      - lbs.net
+#    ports:
+#      - 8081:8081
+#    links:
+#      - mongo.cat:mongo
