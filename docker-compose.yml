@@ -34,7 +34,7 @@ services:
     networks:
       - lbs.net
     links:
-      - mysql.commande:dbcom
+      - mysql.commande:command
       - api.catalogue:api.catalogue.local
 
 #
@@ -71,7 +71,7 @@ services:
     image: 'mariadb:latest'
     command: '--default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci'
     environment:
-      - MYSQL_ROOT_PASSWORD=comroot
+      - MYSQL_ROOT_PASSWORD=command
       - MYSQL_USER=command_lbs
       - MYSQL_PASSWORD=command_lbs
       - MYSQL_DATABASE=command_lbs

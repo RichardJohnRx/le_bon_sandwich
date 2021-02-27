@@ -12,8 +12,7 @@ class BadUri{
 
     public static function error(C $c, Request $rq, Response $rs) : Response{
         $uri = $rq->getUri();
-        ($c->get('logger.error'))->error("the request $uri was not recognized : malformed uri", [400]);
-        return Writer::json_error($rs, 400, "The request $uri was not recognized : malformed uri");
+        return Writer::json_error($rs, 400,  "The request $uri was not recognized : malformed uri");
     }
 
 }

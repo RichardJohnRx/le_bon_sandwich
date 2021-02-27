@@ -6,6 +6,7 @@ namespace lbs\commande\api\controller;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use lbs\commande\api\model\Commande;
+use lbs\commande\api\utils\Writer;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
@@ -22,15 +23,6 @@ class CommandeController{
 
     public function __construct(\Slim\Container $c){
         $this->c = $c;
-    }
-
-    function sayHello(Request $req, Response $resp, array $args):Response {
-        $p = $req->getQueryParam('p', 0);
-        $name = $args['name'];
-   
-        $dbfile = $this->c->settings['dbfile'];
-        $resp->getBody()->write("<h1>Hello, $name</h1>".$dbfile."p=".$p);
-        return $resp;
     }
     
     public function listCommandes(Request $rq, Response $rs, array $args) : Response{
@@ -97,15 +89,20 @@ class CommandeController{
     }
 
     public function getCommandes(Request $rq, Response $rs, array $args): Response{
-        $commandes = Commande::select(['id','mail','montant'])->get();
-        $rs = $rs->withStatus(200)
-            ->withHeader('Content-Type','application/json;charset=utf-8');
-        $rs->getBody()->write(json_encode([
-            'type' => 'collection',
-            'count' => count($commandes),
-            'commandes'  => $commandes->toArray()
-        ]));
-        return $rs;
+        try{
+            $commandes = Commande::select(['id','mail','montant'])->get();
+            $rs = $rs->withStatus(200)
+                ->withHeader('Content-Type','application/json;charset=utf-8');
+            $rs->getBody()->write(json_encode([
+                'type' => 'collection',
+                'count' => count($commandes),
+                'commandes'  => $commandes->toArray()
+            ]));
+            return $rs;
+        } catch (ModelNotFoundException $e) {
+            ($this->c->get('logger.error'))->error("commande $id not found",[404]);
+            return Writer::json_error($rs,404, "commandes not found");
+        }
     }
 
     public function replaceCommande(Request $rq, Response $rs, array $args): Response{

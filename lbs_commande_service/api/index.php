@@ -3,27 +3,36 @@ require_once __DIR__ . '/../src/vendor/autoload.php';
 
 $api_settings = require_once __DIR__ . '/../src/api/conf/api_settings.php';
 $api_errors = require_once __DIR__ . '/../src/api/conf/api_errors.php';
-$api_depend = require_once __DIR__ . '/../src/api/conf/api_dependencies.php';
+use lbs\commande\api\controller\CommandeController;
 
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
+$api_container = new \Slim\Container(array_merge($api_settings, $api_errors));
 
-$config = require_once __DIR__ .  '/../src/conf/settings.php';
-$c = new \Slim\Container($config);
+$app = new \Slim\App($api_container);
 
-$app = new \Slim\App($c);
 
-//\lbs\commande\api\bootstrap\LbsBootstrap::startEloquent($api_container->settings['dbconf']);
+\lbs\commande\api\bootstrap\LbsBootstrap::startEloquent($api_container->settings['db']);
 
-$app->get('/TD1/commandes/{name}[/]',
+$app->get('/TD1/commandes[/]',
  function (Request $req, Response $resp, array $args):Response {
      $controleur = new \lbs\commande\api\controller\CommandeController($this);
      return $controleur->listCommandes($req, $resp, $args);
     }
 ); 
 
-$app->get('/TD1/commanddes/{id}[/]',
-    \lbs\commande\api\controller\CommandeController::class . ':uneCommande')
-    ->setName('commande');
+$app->get('/TD1/commandes/{id}[/]',
+function (Request $req, Response $resp, array $args):Response {
+    $controleur = new \lbs\commande\api\controller\CommandeController($this);
+    return $controleur->uneCommande($req, $resp, $args);
+   }
+); 
 
-$app->run();
+$app->get('/commandes[/]', CommandeController::class.':getCommandes');
+ 
+$app->get('/commandes/{id}[/]',
+\lbs\commande\api\controller\CommandeController::class.':getCommande')->setName('commande');
+
+try{
+    $app->run();
+}catch(Twrowable $e){
+
+}
