@@ -9,7 +9,6 @@ $api_container = new \Slim\Container(array_merge($api_settings, $api_errors));
 
 $app = new \Slim\App($api_container);
 
-
 \lbs\commande\api\bootstrap\LbsBootstrap::startEloquent($api_container->settings['db']);
 
 $app->get('/TD1/commandes[/]',
@@ -36,3 +35,5 @@ try{
 }catch(Twrowable $e){
 
 }
+
+
