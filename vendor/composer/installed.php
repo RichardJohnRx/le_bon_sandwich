@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'cdf1ab9ac81798675ebd0b2c85e8fec777bafe31',
+    'reference' => '0482c7d1540fcdf6ee5ecd7d6ab1f00d0575c767',
     'name' => '__root__',
   ),
   'versions' => 
@@ -18,7 +18,16 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'cdf1ab9ac81798675ebd0b2c85e8fec777bafe31',
+      'reference' => '0482c7d1540fcdf6ee5ecd7d6ab1f00d0575c767',
+    ),
+    'brick/math' => 
+    array (
+      'pretty_version' => '0.9.2',
+      'version' => '0.9.2.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'dff976c2f3487d42c1db75a3b180e2b9f0e72ce0',
     ),
     'doctrine/inflector' => 
     array (
@@ -31,17 +40,17 @@
     ),
     'illuminate/collections' => 
     array (
-      'pretty_version' => 'v8.29.0',
-      'version' => '8.29.0.0',
+      'pretty_version' => 'v8.30.0',
+      'version' => '8.30.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '3313bb9066ad60d91a3407b3ef02c114e2ecf8eb',
+      'reference' => 'ecc881c6dce66e22f2c236374f342d41c7ebeb67',
     ),
     'illuminate/container' => 
     array (
-      'pretty_version' => 'v8.29.0',
-      'version' => '8.29.0.0',
+      'pretty_version' => 'v8.30.0',
+      'version' => '8.30.0.0',
       'aliases' => 
       array (
       ),
@@ -49,26 +58,26 @@
     ),
     'illuminate/contracts' => 
     array (
-      'pretty_version' => 'v8.29.0',
-      'version' => '8.29.0.0',
+      'pretty_version' => 'v8.30.0',
+      'version' => '8.30.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'b91459a9a0bd0de204c3cae6859ebd02dbcee6c6',
+      'reference' => '9c7a9868d7485a82663d67109429094c8e4ed56d',
     ),
     'illuminate/database' => 
     array (
-      'pretty_version' => 'v8.29.0',
-      'version' => '8.29.0.0',
+      'pretty_version' => 'v8.30.0',
+      'version' => '8.30.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f4d512a530a04f8da30b5222f54c56545ff336ed',
+      'reference' => 'a2be80ba829258b9b44fa43443aa81653604b931',
     ),
     'illuminate/macroable' => 
     array (
-      'pretty_version' => 'v8.29.0',
-      'version' => '8.29.0.0',
+      'pretty_version' => 'v8.30.0',
+      'version' => '8.30.0.0',
       'aliases' => 
       array (
       ),
@@ -76,12 +85,12 @@
     ),
     'illuminate/support' => 
     array (
-      'pretty_version' => 'v8.29.0',
-      'version' => '8.29.0.0',
+      'pretty_version' => 'v8.30.0',
+      'version' => '8.30.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'b745df9ef3120d173368fdf56eecc1fc40a9f90c',
+      'reference' => '0f59c467c1b612122488a262e7f9fb32b30df36a',
     ),
     'nesbot/carbon' => 
     array (
@@ -123,6 +132,31 @@
       array (
       ),
       'reference' => '408d5eafb83c57f6365a3ca330ff23aa4a5fa39b',
+    ),
+    'ramsey/collection' => 
+    array (
+      'pretty_version' => '1.1.3',
+      'version' => '1.1.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '28a5c4ab2f5111db6a60b2b4ec84057e0f43b9c1',
+    ),
+    'ramsey/uuid' => 
+    array (
+      'pretty_version' => '4.1.1',
+      'version' => '4.1.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'cd4032040a750077205918c86049aa0f43d22947',
+    ),
+    'rhumsaa/uuid' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '4.1.1',
+      ),
     ),
     'symfony/console' => 
     array (

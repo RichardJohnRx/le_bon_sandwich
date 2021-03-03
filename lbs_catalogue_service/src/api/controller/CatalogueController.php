@@ -117,7 +117,6 @@ class CatalogueController{
 
     public function getSandwichCategories(Request $rq, Response $rs, array $args): Response{
 
-        //4
         $id = (int)$args["id"];
 
         // SELECT * FROM sandwich s INNER JOIN sand2cat sc ON s.id = sc.sand_id WHERE sc.cat_id = 1

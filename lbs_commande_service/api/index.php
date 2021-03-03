@@ -26,9 +26,11 @@ function (Request $req, Response $resp, array $args):Response {
 ); 
 
 $app->get('/commandes[/]', CommandeController::class.':getCommandes');
+
+$app->post('/commandes[/]', CommandeController::class.':createCommande');
  
 $app->get('/commandes/{id}[/]',
-\lbs\commande\api\controller\CommandeController::class.':getCommande')->setName('commande');
+\lbs\commande\api\controller\CommandeController::class.':getCommande');
 
 try{
     $app->run();
