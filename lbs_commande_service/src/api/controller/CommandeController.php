@@ -67,75 +67,89 @@ class CommandeController{
     public function createCommande(Request $rq, Response $rs, array $args) : Response{
 
         if (!$rq->getAttribute('has_errors')) {
-            $getBody = $rq->getBody();
-            $json = json_decode($getBody, true);
-            $mail = $json["mail"];
-            $nom = $json["nom"];
-            $prix_commande = 0;
-            $livraison_date = $json['livraison']['date'];
-            $livraison_heure = $json['livraison']['heure'];
-            $getBody = json_decode($rq->getBody());
+            $json_data = $rq->getParsedBody();
 
-            $client = new Client(["base_uri" => "http://api.catalogue.local"]);
-
-            foreach ($getBody->items as $item) {
-                $response = $client->get($item->uri);
-                $sandwichs = json_decode($response->getBody());
-
-                $order = array();
-                $order["commande"]["uri"] = $item->uri;
-                $order["commande"]["libelle"] = $sandwichs->sandwich->nom;
-                $order["commande"]["tarif"] = $sandwichs->sandwich->prix;
-                $order["commande"]["quantite"] = $item->q;
-                $orders["commandes"][] = $order;
-            }
-            
-            $livraison = [
-                'date' => $livraison_date,
-                'heure' => $livraison_heure
-            ];
-            
-            $token = random_bytes(32);
-            $token = bin2hex($token);
-
-            $newCommande = new Commande();
-
-            $newCommande->id = Uuid::uuid4();
-            $newCommande->nom = (filter_var($nom, FILTER_SANITIZE_STRING));
-            $newCommande->livraison = $livraison['date'].' '.$livraison['heure'];
-            $newCommande->mail = (filter_var($mail, FILTER_SANITIZE_EMAIL));
-
-            foreach ($orders["commandes"] as $commande) {
-                $item = new item();
-                $item->uri = $commande["commande"]["uri"];
-                $item->libelle = $commande["commande"]["libelle"];
-                $item->tarif = $commande["commande"]["tarif"];
-                $item->quantite = $commande["commande"]["quantite"];
-                $item->command_id = $newCommande->id;
-                $item->save();
-                $prix_commande += $commande["commande"]["tarif"] * $commande["commande"]["quantite"];
+            if(!isset($json_data['nom'])){
+                return Writer::json_error($rs, 400, "Missing data: nom");
             }
 
-            $newCommande->montant = $prix_commande;
-            $newCommande->token = $token;
+            if(!isset($json_data['mail'])){
+                return Writer::json_error($rs, 400, "Missing data: mail");
+            }
 
-            $newCommande->save();
+            if(!isset($json_data['livraison']['date'])){
+                return Writer::json_error($rs, 400, "Missing data: livraison(date)");
+            }
 
-            $rs = $rs->withStatus(201)
-                ->withHeader('Location', 'http://api.commande.local:19080/commandes/' . $newCommande->id)
-                ->withHeader('Content-Type', 'application/json;charset=utf-8');
-            $rs->getBody()->write(json_encode([
-                "commande" => Commande::select("nom", "mail", "livraison", 'id', 'token', 'montant')->find($newCommande->id),
-                "items" => $getBody->items
-            ]));
+            if(!isset($json_data['livraison']['heure'])){
+                return Writer::json_error($rs, 400, "Missing data: livraison(heure)");
+            }
 
-            return $rs;
+            try{
+                $client = new Client(["base_uri" => $this->c->settings['catalogue_service_endpoint']]);
+                $mail = $json_data["mail"];
+                $nom = $json_data["nom"];
+                $prix_commande = 0;
+                $livraison_date = $json_data['livraison']['date'];
+                $livraison_heure = $json_data['livraison']['heure'];
+                $getBody = json_decode($rq->getBody());
+
+        
+                foreach ($getBody->items as $item) {
+                    $response = $client->get($item->uri);
+                    $sandwichs = json_decode($response->getBody());
+
+                    $order = array();
+                    $order["commande"]["uri"] = $item->uri;
+                    $order["commande"]["libelle"] = $sandwichs->sandwich->nom;
+                    $order["commande"]["tarif"] = $sandwichs->sandwich->prix;
+                    $order["commande"]["quantite"] = $item->q;
+                    $orders["commandes"][] = $order;
+                }
+                
+                $livraison = [
+                    'date' => $livraison_date,
+                    'heure' => $livraison_heure
+                ];
+                
+                $token = random_bytes(32);
+                $token = bin2hex($token);
+
+                $newCommande = new Commande();
+
+                $newCommande->id = Uuid::uuid4();
+                $newCommande->nom = (filter_var($nom, FILTER_SANITIZE_STRING));
+                $newCommande->livraison = $livraison['date'].' '.$livraison['heure'];
+                $newCommande->mail = (filter_var($mail, FILTER_SANITIZE_EMAIL));
+
+                foreach ($orders["commandes"] as $commande) {
+                    $item = new item();
+                    $item->uri = $commande["commande"]["uri"];
+                    $item->libelle = $commande["commande"]["libelle"];
+                    $item->tarif = $commande["commande"]["tarif"];
+                    $item->quantite = $commande["commande"]["quantite"];
+                    $item->command_id = $newCommande->id;
+                    $item->save();
+                    $prix_commande += $commande["commande"]["tarif"] * $commande["commande"]["quantite"];
+                }
+
+                $newCommande->montant = $prix_commande;
+                $newCommande->token = $token;
+
+                $newCommande->save();
+
+
+                $uri = $rq->getUri();
+                $baseUrl = $uri->getBaseUrl();
+
+
+                return Writer::json_output($rs, 201, ['commandes'=>$newCommande->toArray(), 'items'=>$getBody->items])
+                ->withHeader('Location', $baseUrl.$this->c['router']->pathFor('commande', ['id'=>$newCommande->id]));
+            }catch(Expeption $e){
+                return Writer::json_error($rs, 500, $e->getMessage());
+            }
         } else {
-            $errors = $rq->getAttribute('errors');
-            $rs = $rs->withStatus(400)
-                ->withHeader('Content-Type', 'application/json;charset=utf-8');
-            $rs->getBody()->write(json_encode($errors));
-            return $rs;
+            return Writer::json_error($rs, 400, $rq->getAttribute('errors'));
         }
     }
 

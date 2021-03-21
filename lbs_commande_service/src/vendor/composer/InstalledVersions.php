@@ -33,6 +33,15 @@ private static $installed = array (
       ),
       'reference' => 'dff976c2f3487d42c1db75a3b180e2b9f0e72ce0',
     ),
+    'davidepastore/slim-validation' => 
+    array (
+      'pretty_version' => 'v0.5.1',
+      'version' => '0.5.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'c28d6e2545dab51c9c4330d4db1dc55a75632f56',
+    ),
     'doctrine/inflector' => 
     array (
       'pretty_version' => '2.0.3',
@@ -224,6 +233,15 @@ private static $installed = array (
       array (
       ),
       'reference' => 'cd4032040a750077205918c86049aa0f43d22947',
+    ),
+    'respect/validation' => 
+    array (
+      'pretty_version' => '1.1.31',
+      'version' => '1.1.31.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '45d109fc830644fecc1145200d6351ce4f2769d0',
     ),
     'rhumsaa/uuid' => 
     array (

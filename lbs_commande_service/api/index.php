@@ -4,6 +4,8 @@ require_once __DIR__ . '/../src/vendor/autoload.php';
 $api_settings = require_once __DIR__ . '/../src/api/conf/api_settings.php';
 $api_errors = require_once __DIR__ . '/../src/api/conf/api_errors.php';
 use lbs\commande\api\controller\CommandeController;
+use \DavidePastore\Slim\Validation\Validation as Validation;
+use lbs\commande\api\middlewares\Cors;
 
 $api_container = new \Slim\Container(array_merge($api_settings, $api_errors));
 
@@ -25,12 +27,16 @@ function (Request $req, Response $resp, array $args):Response {
    }
 ); 
 
-$app->get('/commandes[/]', CommandeController::class.':getCommandes');
+$app->get('/commandes[/]', CommandeController::class.':getCommandes')->add(Cors::class.':checkHeaderOrigin')->add(Cors::class.':checkHeaderOrigin')->add(Cors::class.':headersCORS');
 
-$app->post('/commandes[/]', CommandeController::class.':createCommande');
+$app->post('/commandes[/]', CommandeController::class.':createCommande')->add(new Validation(lbs\commande\api\validator\CommandValidator::validators()))->add(Cors::class.':checkHeaderOrigin')->add(Cors::class.':headersCORS');
  
 $app->get('/commandes/{id}[/]',
-\lbs\commande\api\controller\CommandeController::class.':getCommande');
+\lbs\commande\api\controller\CommandeController::class.':getCommande')->setName('commande')->add(Cors::class.':checkHeaderOrigin')->add(Cors::class.':headersCORS');
+
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
 
 try{
     $app->run();

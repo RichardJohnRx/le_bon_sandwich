@@ -15,7 +15,8 @@
     "ramsey/uuid": "^4.1",
     "guzzlehttp/guzzle": "^6.5",
     "php": ">=7.0",
-    "ext-json": "*"
+    "ext-json": "*",
+    "davidepastore/slim-validation": "^0.5.1"
   },
   "autoload": {
     "psr-4": {

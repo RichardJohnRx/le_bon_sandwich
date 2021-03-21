@@ -1,0 +1,27 @@
+{
+    "name": "vendor_name/td1",
+    "description": "description",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "authors": [
+      {
+        "name": "Julieta Pinon",
+        "email": "julieta@gmail.com"
+      }
+    ],
+    "require": {
+      "slim/slim": "3.*",
+      "illuminate/database": "8.17.0",
+      "ramsey/uuid": "^4.1",
+      "guzzlehttp/guzzle": "^6.5",
+      "php": ">=7.0",
+      "ext-json": "*",
+        "firebase/php-jwt": "^5.2",
+        "davidepastore/slim-validation": "^0.5.1"
+    },
+    "autoload": {
+      "psr-4": {
+        "lbs\\fidelisation\\": "."
+      }
+    }
+  }
