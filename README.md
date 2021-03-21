@@ -2,6 +2,6 @@
 
 Membres de l'équipe :
 
-Julieta Guadalupe PINON SERRATOS
-Ricardo Iván RAMIREZ BELLO
-Yassine SOUA
+Julieta Guadalupe PINON SERRATOS,
+Ricardo Iván RAMIREZ BELLO,
+Yassine SOUA.
